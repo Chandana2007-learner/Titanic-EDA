@@ -8,18 +8,18 @@ st.set_page_config(page_title="Titanic EDA Dashboard", layout="wide")
 st.title("🚢 Titanic Exploratory Data Analysis")
 st.write("Explore passenger survival patterns using six visualizations.")
 
-Load the Titanic dataset
+#Load the Titanic dataset
 
 df = sns.load_dataset("titanic")
 
-Dataset overview
+#Dataset overview
 
 st.header("1. Dataset Overview")
 st.write("Number of rows:", df.shape[0])
 st.write("Number of columns:", df.shape[1])
 st.dataframe(df.head())
 
-Survival count
+#Survival count
 
 st.header("2. Titanic Survival Count")
 fig, ax = plt.subplots(figsize=(7, 4))
@@ -30,7 +30,7 @@ ax.set_ylabel("Passenger Count")
 st.pyplot(fig)
 plt.close(fig)
 
-Survival by gender
+#Survival by gender
 
 st.header("3. Survival by Gender")
 fig, ax = plt.subplots(figsize=(7, 4))
@@ -42,7 +42,7 @@ ax.legend(title="Survived (0 = No, 1 = Yes)")
 st.pyplot(fig)
 plt.close(fig)
 
-Survival by passenger class
+#Survival by passenger class
 
 st.header("4. Survival by Passenger Class")
 fig, ax = plt.subplots(figsize=(7, 4))
@@ -54,7 +54,7 @@ ax.legend(title="Survived (0 = No, 1 = Yes)")
 st.pyplot(fig)
 plt.close(fig)
 
-Survival rate by passenger class
+#Survival rate by passenger class
 
 st.header("5. Survival Rate by Passenger Class")
 survival_rate = df.groupby("pclass", observed=True)["survived"].mean() * 100
@@ -67,7 +67,7 @@ plt.tight_layout()
 st.pyplot(fig)
 plt.close(fig)
 
-Survival by age
+#Survival by age
 
 st.header("6. Survival by Age")
 fig, ax = plt.subplots(figsize=(8, 4))
@@ -85,7 +85,7 @@ ax.set_ylabel("Passenger Count")
 st.pyplot(fig)
 plt.close(fig)
 
-Survival by embarkation port
+#Survival by embarkation port
 
 st.header("7. Survival by Embarkation Port")
 fig, ax = plt.subplots(figsize=(7, 4))
@@ -97,7 +97,7 @@ ax.legend(title="Survived (0 = No, 1 = Yes)")
 st.pyplot(fig)
 plt.close(fig)
 
-Summary statistics
+#Summary statistics
 
 st.header("8. Survival Statistics")
 st.write("Survival count")
