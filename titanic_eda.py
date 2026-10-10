@@ -1,115 +1,110 @@
+import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-import streamlit as st
 
-print("All libraries loaded successfully!")
+st.set_page_config(page_title="Titanic EDA Dashboard", layout="wide")
 
-df = pd.read_csv("titanic.csv")
-df.columns = df.columns.str.strip()
-print(df.columns.tolist())
-print(df.head())
-# Load the Titanic dataset
+st.title("🚢 Titanic Exploratory Data Analysis")
+st.write("Explore passenger survival patterns using six visualizations.")
+
+Load the Titanic dataset
+
 df = sns.load_dataset("titanic")
 
-# Display the first five rows
-print("\nFirst 5 rows:")
-print(df.head())
+Dataset overview
 
-# Check dataset information
-print("\nDataset information:")
-print(df.info())
+st.header("1. Dataset Overview")
+st.write("Number of rows:", df.shape[0])
+st.write("Number of columns:", df.shape[1])
+st.dataframe(df.head())
 
-# Check missing values
-print("\nMissing values:")
-print(df.isnull().sum())
+Survival count
 
-# Survival count
-print("\nSurvival count:")
-print(df["survived"].value_counts())
+st.header("2. Titanic Survival Count")
+fig, ax = plt.subplots(figsize=(7, 4))
+sns.countplot(data=df, x="survived", ax=ax)
+ax.set_title("Titanic Survival Count")
+ax.set_xlabel("Survived (0 = No, 1 = Yes)")
+ax.set_ylabel("Passenger Count")
+st.pyplot(fig)
+plt.close(fig)
 
-# Plot survival count
-sns.countplot(data=df, x="survived")
-plt.title("Titanic Survival Count")
-plt.show()
-# Survival by gender
-plt.figure(figsize=(7, 5))
-sns.countplot(data=df, x="sex", hue="survived")
+Survival by gender
 
-plt.title("Titanic Survival by Gender")
-plt.xlabel("Gender")
-plt.ylabel("Passenger Count")
-plt.legend(title="Survived (0 = No, 1 = Yes)")
-plt.show()
-# Survival by passenger class
-plt.figure(figsize=(7, 5))
+st.header("3. Survival by Gender")
+fig, ax = plt.subplots(figsize=(7, 4))
+sns.countplot(data=df, x="sex", hue="survived", ax=ax)
+ax.set_title("Titanic Survival by Gender")
+ax.set_xlabel("Gender")
+ax.set_ylabel("Passenger Count")
+ax.legend(title="Survived (0 = No, 1 = Yes)")
+st.pyplot(fig)
+plt.close(fig)
 
-sns.countplot(data=df, x="pclass", hue="survived")
+Survival by passenger class
 
-plt.title("Titanic Survival by Passenger Class")
-plt.xlabel("Passenger Class (1 = First, 2 = Second, 3 = Third)")
-plt.ylabel("Passenger Count")
-plt.legend(title="Survived (0 = No, 1 = Yes)")
+st.header("4. Survival by Passenger Class")
+fig, ax = plt.subplots(figsize=(7, 4))
+sns.countplot(data=df, x="pclass", hue="survived", ax=ax)
+ax.set_title("Titanic Survival by Passenger Class")
+ax.set_xlabel("Passenger Class")
+ax.set_ylabel("Passenger Count")
+ax.legend(title="Survived (0 = No, 1 = Yes)")
+st.pyplot(fig)
+plt.close(fig)
 
+Survival rate by passenger class
+
+st.header("5. Survival Rate by Passenger Class")
+survival_rate = df.groupby("pclass", observed=True)["survived"].mean() * 100
+fig, ax = plt.subplots(figsize=(7, 4))
+survival_rate.plot(kind="bar", ax=ax)
+ax.set_title("Survival Rate by Passenger Class")
+ax.set_xlabel("Passenger Class (1 = First, 2 = Second, 3 = Third)")
+ax.set_ylabel("Survival Rate (%)")
 plt.tight_layout()
-plt.show()
-# Survival rate by gender
-print("\nSurvival rate by gender:")
-print(df.groupby("sex")["survived"].mean() * 100)
+st.pyplot(fig)
+plt.close(fig)
 
-# Survival rate by passenger class
-print("\nSurvival rate by passenger class:")
-print(df.groupby("pclass")["survived"].mean() * 100)
-# Survival by Passenger Class
-# Check column names
-print(df.columns.tolist())
-print(df.head())
+Survival by age
 
-# Remove extra spaces from column names
-df.columns = df.columns.str.strip()
-# Survival by passenger class
-sns.barplot(data=df, x="pclass", y="survived")
-
-plt.title("Titanic Survival by Passenger Class")
-plt.xlabel("Passenger Class")
-plt.ylabel("Survival Rate")
-
-plt.tight_layout()
-plt.show()
-# Survival rate by passenger class
-survival_rate = df.groupby("pclass")["survived"].mean() * 100
-
-print("\nSurvival Rate by Passenger Class:")
-print(survival_rate)
-
-survival_rate.plot(kind="bar")
-plt.title("Titanic Survival Rate by Passenger Class")
-plt.xlabel("Passenger Class")
-plt.ylabel("Survival Rate (%)")
-plt.tight_layout()
-plt.show()
-# Survival by age
-plt.figure(figsize=(8, 5))
-
+st.header("6. Survival by Age")
+fig, ax = plt.subplots(figsize=(8, 4))
 sns.histplot(
-    data=df,
-    x="age",
-    hue="survived",
-    bins=20,
-    multiple="stack"
+data=df,
+x="age",
+hue="survived",
+bins=20,
+multiple="stack",
+ax=ax
 )
+ax.set_title("Titanic Survival by Age")
+ax.set_xlabel("Passenger Age")
+ax.set_ylabel("Passenger Count")
+st.pyplot(fig)
+plt.close(fig)
 
-plt.title("Titanic Survival by Age")
-plt.xlabel("Passenger Age")
-plt.ylabel("Passenger Count")
-plt.tight_layout()
-plt.show()
-# Survival by embarkation port
-plt.figure(figsize=(7, 5))
-sns.countplot(data=df, x="embarked", hue="survived")
+Survival by embarkation port
 
-plt.title("Titanic Survival by Embarkation Port")
-plt.xlabel("Embarkation Port")
-plt.ylabel("Passenger Count")
-plt.tight_layout()
-plt.show()
+st.header("7. Survival by Embarkation Port")
+fig, ax = plt.subplots(figsize=(7, 4))
+sns.countplot(data=df, x="embarked", hue="survived", ax=ax)
+ax.set_title("Titanic Survival by Embarkation Port")
+ax.set_xlabel("Embarkation Port")
+ax.set_ylabel("Passenger Count")
+ax.legend(title="Survived (0 = No, 1 = Yes)")
+st.pyplot(fig)
+plt.close(fig)
+
+Summary statistics
+
+st.header("8. Survival Statistics")
+st.write("Survival count")
+st.write(df["survived"].value_counts().rename(index={0: "Did not survive", 1: "Survived"}))
+
+st.write("Survival rate by gender (%)")
+st.write((df.groupby("sex", observed=True)["survived"].mean() * 100).round(2))
+
+st.write("Survival rate by passenger class (%)")
+st.write((df.groupby("pclass", observed=True)["survived"].mean() * 100).round(2))
